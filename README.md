@@ -1,11 +1,10 @@
 # PySubEnum
- 
 
 ## What is this ? 
-A python tool that uses AsnycIO to launch a bunch of SubDomain tools and aggregates the output. New tools can be added by installing them on your system then editing the config file.
+A python tool that uses AsnycIO to launch a bunch of SubDomain tools and aggregates the output. It also resolves the IPs before writing to the output file. New tools can be added by installing them on your system then editing the config file.
 
 ## Why ?
-1. I wanted to run a bunch of tools and all the tools I found had way too many functionalities. So I wrote this simple script that can launch tools and get the output. 
+1. I wanted to run a bunch of tools and all the scripts I found had way too much unnecessary functionalities. So I wrote this simple script that can launch tools and get the output. 
 
 2. I really wanted to learn python AsyncIO and this seemed to be a good opportunity.
 

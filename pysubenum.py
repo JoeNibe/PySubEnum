@@ -49,11 +49,27 @@ def get_output(outputs):
 async def launch_tasks(semaphore, cmds, outputs, tools, out_file="final"):
     await asyncio.gather(*(run_cmd(semaphore, c, tool=tool) for c, tool in zip(cmds, tools)))
     subdomains = get_output(outputs)
-    with open(out_file, 'w') as f:
-        for sub in subdomains:
-            f.write(sub + "\n")
     log.good(f"{len(subdomains)} Subdomains discovered")
+    log.good("Running IP checks on discovered subdomains")
+    ip_list = await asyncio.gather(*(check_ip(host) for host in subdomains))
+    count = 0
+    with open(out_file, 'w') as f:
+        for sub, ip in ip_list:
+            if ip != 'Err':
+                count += 1
+            f.write(f"{sub},{ip}\n")
+    log.good(f"{count} Subdomains with IPs discovered")
     log.good(f"Output written to file final")
+
+
+async def check_ip(host):
+    try:
+        loop = asyncio.get_event_loop()
+        result = await loop.getaddrinfo(host, 80)
+        ip = result[0][-1][0]
+        return host, ip
+    except Exception as e:
+        return host, 'Err'
 
 
 def read_config(config_file):
